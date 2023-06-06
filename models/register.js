@@ -9,10 +9,8 @@ const registerSchema = new Schema(
     },
     email: {
       type: String,
-      trim: true,
-      lowercase: true,
       unique: true,
-      typeKey: "email",
+      required: true,
     },
     password: {
       type: String,
