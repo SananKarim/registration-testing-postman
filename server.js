@@ -2,25 +2,29 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const registerRoutes = require("./routes/registerRoutes");
-require("./db");
+const morgan = require("morgan");
+// require("./db");
 
 const PORT = 3002;
-// const dbURI =
-//   "mongodb+srv://sanan:1234@cluster0.a3ydmjf.mongodb.net/login_register";
-// mongoose
-//   .connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-//   .then((result) => {
-//     app.listen(PORT, () => {
-//       console.log("Server started on port 3002");
-//     });
-//   })
-//   .catch((err) => console.log(err));
+const dbURI =
+  "mongodb+srv://sanan:1234@cluster0.a3ydmjf.mongodb.net/login_register";
+mongoose
+  .connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then((result) => {
+    app.listen(PORT, () => {
+      console.log("Server started on port 3002");
+    });
+  })
+  .catch((err) => console.log(err));
 
-app.listen(PORT, () => {
-  console.log("Server started on port 3002");
-});
+// app.listen(PORT, () => {
+//   console.log("Server started on port 3002");
+// });
 
 app.use(express.json());
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
+app.use(morgan("dev"));
 
 app.use("/register", registerRoutes);
 

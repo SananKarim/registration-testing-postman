@@ -1,20 +1,17 @@
-const { validateSignup } = require("../middlewares/validator");
+const { validateSignup } = require("../rules/rules");
 const Registers = require("../models/register");
+const Joi = require("joi");
+
+
 
 const registration = (req, res) => {
-  const { name, email, password } = req.body;
-  const { error } = validateSignup(name, email, password);
+
+  const register = new Registers(req.body);
+  const { error } = validateSignup(req.body);
 
   if (error) {
-    return res.status(400).json({ error: error.details });
+    return res.status(400).json({ error: error.message });
   } else {
-    const { name, email, password } = req.body;
-    const register = new Registers({
-      name: name,
-      email: email,
-      password: password,
-    });
-
     console.log("line 1");
     register
       .save()
@@ -32,7 +29,7 @@ const registration = (req, res) => {
         }
 
         console.log("line 3");
-        console.log(error);
+
         res.status(500).json({ error: errorMessage });
       });
   }
